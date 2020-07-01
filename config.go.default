@@ -1,0 +1,15 @@
+package main
+
+var (
+	serverName  = "PublicFeedback Core API"
+	serverVer   = "0.0.1"
+	mongoUri    = "mongodb://***"
+	mongoDb     = "****"
+	tokenSecret = "****"
+	tokenExp    = "24h" // hours
+	serveUri    = ":4200"
+	portHTTPS   = "443"
+	logPath     = "development.log"
+	mailDomain  = "*****"
+	mailAPIKey  = "*****"
+)
