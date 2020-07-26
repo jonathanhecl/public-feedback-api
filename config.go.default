@@ -2,7 +2,7 @@ package main
 
 var (
 	serverName  = "PublicFeedback Core API"
-	serverVer   = "0.0.1"
+	serverVer   = "0.0.2"
 	mongoUri    = "mongodb://***"
 	mongoDb     = "****"
 	tokenSecret = "****"
@@ -12,4 +12,5 @@ var (
 	logPath     = "development.log"
 	mailDomain  = "*****"
 	mailAPIKey  = "*****"
+	adminPassword = "123456789"
 )

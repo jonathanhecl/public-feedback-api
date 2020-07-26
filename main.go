@@ -27,7 +27,7 @@ func main() {
 	// MongoDB
 	db := database.InitDatabase(mongoUri, mongoDb)
 	defer database.CloseDatabase(db)
-	extras.InitExtras(mailDomain, mailAPIKey)
+	extras.InitExtras(mailDomain, mailAPIKey, adminPassword)
 	endpoint.InitEndpoint(db)
 
 	// Routes

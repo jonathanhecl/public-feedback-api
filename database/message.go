@@ -19,7 +19,7 @@ func (db DataStore) GetMessage(MessageID string) (models.MessageObject, error) {
 	defer cancel()
 	var msg models.MessageObject
 	q := bson.M{"id": MessageID}
-	if err := db.messages.FindOne(ctx, q).Decode(&msg); err == nil {
+	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
 		return msg, errors.New("Message not found")
 	}
 	return msg, nil
@@ -32,7 +32,7 @@ func (db DataStore) ConfirmMessage(MessageID string, ConfirmationCode string) er
 	defer cancel()
 	var msg models.MessageObject
 	q := bson.M{"id": MessageID}
-	if err := db.messages.FindOne(ctx, q).Decode(&msg); err == nil {
+	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
 		return errors.New("Message not found")
 	}
 	if msg.ConfirmedAt.Unix() > 0 {
@@ -53,7 +53,7 @@ func (db DataStore) ConfirmMessage(MessageID string, ConfirmationCode string) er
 
 }
 
-func (db DataStore) NewMessage(Email string, Message string) (string, error) {
+func (db DataStore) NewMessage(Email string, Message string, GroupID string) (string, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -61,6 +61,7 @@ func (db DataStore) NewMessage(Email string, Message string) (string, error) {
 	msg.MessageID = uuid.New().String()
 	msg.Email = Email
 	msg.Message = Message
+	msg.ToGroup = GroupID
 	msg.ConfirmationCode = extras.RandomCode()
 	msg.CreatedAt = time.Now()
 	if _, err := db.messages.InsertOne(ctx, msg); err != nil {

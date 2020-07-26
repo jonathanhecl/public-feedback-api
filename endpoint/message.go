@@ -3,6 +3,7 @@ package endpoint
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"../extras"
@@ -30,13 +31,23 @@ func HandleNewMessage(w http.ResponseWriter, r *http.Request) {
 		ErrorResponse(w, r, errors.New("Message required"))
 		return
 	}
-	messageID, err:= ep.db.NewMessage(req.Email, req.Message)
-	if err!=nil {
+	if len(req.GroupID) == 0 {
+		ErrorResponse(w, r, errors.New("Group required"))
+		return
+	}
+	if _, err := ep.db.GetGroup(req.GroupID); err != nil {
+		ErrorResponse(w, r, errors.New("Group not found"))
+		return
+	}
+
+	messageID, err := ep.db.NewMessage(req.Email, req.Message, req.GroupID)
+	if err != nil {
 		ErrorResponse(w, r, errors.New("Internal error"))
 		return
 	}
 
 	// send email
+	fmt.Println("SEND")
 	fmt.Println(messageID)
 
 	SuccessResponse(w, r)
@@ -60,19 +71,20 @@ func HandleRetryConfirmationMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	m, err:=ep.db.GetMessage(req.MessageID)
-	if err!=nil {
+	msg, err := ep.db.GetMessage(req.MessageID)
+	if err != nil {
 		ErrorResponse(w, r, errors.New("Internal error"))
 		return
 	}
 
-	if m.ConfirmedAt.Unix() > 0 {
+	if msg.ConfirmedAt.Unix() > 0 {
 		ErrorResponse(w, r, errors.New("Message already confirmed"))
 		return
 	}
 
 	// resend email
-	fmt.Println(m.MessageID)
+	fmt.Println("RESEND")
+	fmt.Println(msg)
 
 	SuccessResponse(w, r)
 
@@ -81,7 +93,7 @@ func HandleRetryConfirmationMessage(w http.ResponseWriter, r *http.Request) {
 // HandleConfirmMessage - Handle Confirm Message
 func HandleConfirmMessage(w http.ResponseWriter, r *http.Request) {
 
-	var req models.HandleConfirmMessageRequest
+	var req models.ConfirmMessageRequest
 
 	// Body parser
 	err := DecodeRequest(w, r, &req)
@@ -101,11 +113,13 @@ func HandleConfirmMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// confirm
-	err=ep.db.ConfirmMessage(req.MessageID, req.ConfirmationCode)
-	if err!=nil {
+	err = ep.db.ConfirmMessage(req.MessageID, req.ConfirmationCode)
+	if err != nil {
 		ErrorResponse(w, r, errors.New("Internal error"))
 		return
 	}
+
+	log.Println("CONFIRMED")
 
 	SuccessResponse(w, r)
 

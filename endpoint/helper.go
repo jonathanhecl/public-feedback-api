@@ -34,3 +34,10 @@ func SuccessResponse(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, models.SuccessObject{Success: true})
 
 }
+
+func SuccessResponseInterface(w http.ResponseWriter, r *http.Request, s interface{}) {
+
+	render.Status(r, 200)
+	render.JSON(w, r, s)
+
+}

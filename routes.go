@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"./endpoint"
+	"./extras"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -31,9 +32,18 @@ func Routes() chi.Router {
 	r.Group(func(r chi.Router) {
 
 		r.Route("/message", func(r chi.Router) {
-			r.Post("/", http.HandlerFunc(endpoint.HandleNewMessage))
-			r.Post("/confirm", http.HandlerFunc(endpoint.HandleConfirmMessage))
-			r.Get("/resend", http.HandlerFunc(endpoint.HandleRetryConfirmationMessage))
+			r.Post("/", http.HandlerFunc(endpoint.HandleNewMessage))                    // Post a new message
+			r.Post("/confirm", http.HandlerFunc(endpoint.HandleConfirmMessage))         // Confirm a message (with the email)
+			r.Get("/resend", http.HandlerFunc(endpoint.HandleRetryConfirmationMessage)) // Resend email to confirm a message
+		})
+
+		r.Get("/groups", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // Get groups
+
+		r.Route("/admin", func(r chi.Router) {
+			r.Use(extras.Authenticator)
+			r.Get("/groups", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage))      // Get groups detail
+			r.Post("/groups", http.HandlerFunc(endpoint.HandleAdminSetGroupMessage))      // Create or edit a group
+			r.Delete("/groups", http.HandlerFunc(endpoint.HandleAdminDeleteGroupMessage)) // Delete a group
 		})
 
 	})

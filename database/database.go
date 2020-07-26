@@ -12,6 +12,7 @@ type DataStore struct {
 	client   *mongo.Client
 	mongoDb  string
 	messages *mongo.Collection
+	groups   *mongo.Collection
 }
 
 func InitDatabase(mongoUri string, mongoDb string) *DataStore {
@@ -30,6 +31,7 @@ func InitDatabase(mongoUri string, mongoDb string) *DataStore {
 		client:   client,
 		mongoDb:  mongoDb,
 		messages: client.Database(mongoDb).Collection("messages"),
+		groups:   client.Database(mongoDb).Collection("groups"),
 	}
 }
 
