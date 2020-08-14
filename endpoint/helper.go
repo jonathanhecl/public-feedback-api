@@ -9,6 +9,16 @@ import (
 	"github.com/go-chi/render"
 )
 
+func GetIP(r *http.Request) string {
+
+	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	if forwarded != "" {
+		return forwarded
+	}
+	return r.RemoteAddr
+
+}
+
 func DecodeRequest(w http.ResponseWriter, r *http.Request, req interface{}) error {
 
 	if r.Body == nil {

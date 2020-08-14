@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"./endpoint"
-	"./extras"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -36,16 +35,9 @@ func Routes() chi.Router {
 		r.Get("/groups", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // Get groups use ISO 2 chars for country
 
 		r.Route("/message", func(r chi.Router) {
-			r.Post("/", http.HandlerFunc(endpoint.HandleNewMessage))                    // Post a new message (TODO: falta el nombre del usuario, debo guardar el IP y el User-Agent)
+			r.Post("/", http.HandlerFunc(endpoint.HandleNewMessage))                    // Post a new message
 			r.Post("/confirm", http.HandlerFunc(endpoint.HandleConfirmMessage))         // Confirm a message (with the email)
 			r.Get("/resend", http.HandlerFunc(endpoint.HandleRetryConfirmationMessage)) // Resend email to confirm a message
-		})
-
-		r.Route("/admin", func(r chi.Router) {
-			r.Use(extras.Authenticator)
-			r.Get("/groups", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage))      // Get groups detail
-			r.Post("/groups", http.HandlerFunc(endpoint.HandleAdminSetGroupMessage))      // Create or edit a group (TODO: Grupo tienen código string (ej. CL))
-			r.Delete("/groups", http.HandlerFunc(endpoint.HandleAdminDeleteGroupMessage)) // Delete a group
 		})
 
 		// PAGINA de respuesta de aprobado/desaprobado
@@ -54,23 +46,23 @@ func Routes() chi.Router {
 		//api.populeaks.com/348983748734/moderation/disapproved/38473847-54545-6565656/ DESAPROBAR/RECHAZAR
 
 		r.Route("/moderation", func(r chi.Router) { // TODO:
-			r.Get("/:mod:/approved/:id:", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage))    // TODO: Se envia correo al usuario informandole que fue aprobado y se enviará. No puede rechazarse o volverse a aprobar. Se guarda ID de moderador que aprueba.
-			r.Get("/:mod:/disapproved/:id:", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage)) // TODO: Se desaprueba, envia correo al usuario informandole que no se acepto, pero se puede aprobar en cualquier momento. Se guarda ID de moderador de rechaza.
+			r.Get("/:id:/approved/:code:", http.HandlerFunc(endpoint.HandleGetGroupsMessage))    // TODO: Se envia correo al usuario informandole que fue aprobado y se enviará. No puede rechazarse o volverse a aprobar. Se guarda ID de moderador que aprueba.
+			r.Get("/:id:/disapproved/:code:", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Se desaprueba, envia correo al usuario informandole que no se acepto, pero se puede aprobar en cualquier momento. Se guarda ID de moderador de rechaza.
 		})
 
 		// TODO: cp=debe generarse diferente por mensaje y politico
 
 		//<img src="https://www.populeaks.com/tracking/pixel.gif?id=38473847-54545-6565656&cp=abc8347837483" /> 1x1
 		r.Route("/tracking", func(r chi.Router) { // TODO:
-			r.Get("/pixel.gif", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage)) // TODO: Pixel de lectura del correo (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+			r.Get("/pixel.gif", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Pixel de lectura del correo (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
 		})
 
 		// PAGINA de RESPUESTA del politico
 
 		// https://www.populeaks.com/feedback/38473847-54545-6565656/?cp=abc8347837483 RESPONDER
 		r.Route("/feedback", func(r chi.Router) { // TODO:
-			r.Get("/:id:", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage))  // TODO: Lee el mensaje del usuario, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
-			r.Post("/:id:", http.HandlerFunc(endpoint.HandleAdminGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
+			r.Get("/:id:", http.HandlerFunc(endpoint.HandleGetGroupsMessage))  // TODO: Lee el mensaje del usuario, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+			r.Post("/:id:", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
 		})
 
 		/*

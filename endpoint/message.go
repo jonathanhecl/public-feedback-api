@@ -23,6 +23,10 @@ func HandleNewMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validations
+	if len(req.Name) == 0 {
+		ErrorResponse(w, r, errors.New("Name required"))
+		return
+	}
 	if len(req.Email) == 0 || !extras.ValidateEmail(req.Email) {
 		ErrorResponse(w, r, errors.New("E-mail invalid"))
 		return
@@ -40,15 +44,18 @@ func HandleNewMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	messageID, err := ep.db.NewMessage(req.Email, req.Message, req.GroupID)
+	ip := GetIP(r)
+	userAgent := r.UserAgent()
+
+	messageID, err := ep.db.NewMessage(req.Email, req.Name, req.Message, req.GroupID, ip, userAgent)
 	if err != nil {
 		ErrorResponse(w, r, errors.New("Internal error"))
 		return
 	}
 
-	// send email
-	fmt.Println("SEND")
-	fmt.Println(messageID)
+	// TODO: Send email to user
+	fmt.Println("New message user confirmation pending: ", messageID)
+	go EmailConfirmation(messageID)
 
 	SuccessResponse(w, r)
 }
@@ -82,9 +89,10 @@ func HandleRetryConfirmationMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// resend email
-	fmt.Println("RESEND")
-	fmt.Println(msg)
+	// TODO: Resend email to user
+	fmt.Println("Resend message user confirmation pending: ", msg.MessageID)
+	fmt.Println("Confirmation code:", msg.ConfirmationCode)
+	go EmailConfirmation(msg.MessageID)
 
 	SuccessResponse(w, r)
 
@@ -119,7 +127,9 @@ func HandleConfirmMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("CONFIRMED")
+	// TODO: Confirmed, send to mods
+	log.Println("Message user confirmation, send it to mods: ", req.MessageID)
+	go EmailWaitModeration(req.MessageID)
 
 	SuccessResponse(w, r)
 

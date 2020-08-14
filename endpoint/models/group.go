@@ -1,44 +1,22 @@
 package models
 
-import "time"
-
 type GroupObject struct {
-	GroupID   string        `json:"group_id"` // Empty = new
-	Title     string        `json:"title"`
-	Members   []MemberGroup `json:"members"`
-	Enabled   bool          `json:"enabled"`
-	CreatedAt time.Time     `json:"created_at"` // Read only
-	UpdatedAt time.Time     `json:"updated_at"` // Read only
+	GroupID string        `json:"group_id"` // Empty = new
+	Label   string        `json:"label"`
+	Members []MemberGroup `json:"members"`
+}
+
+type MemberGroup struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type GroupSimpleObject struct {
 	GroupID      string `json:"group_id"`
-	Title        string `json:"title"`
+	Label        string `json:"lebel"`
 	MembersCount int    `json:"members_count"`
-}
-
-type MemberGroup struct {
-	Name    string `json:"name"`
-	Email   string `json:"email"`
-	Enabled bool   `json:"enabled"`
 }
 
 type GetGroupsMessageResponse struct {
 	Groups []GroupSimpleObject `json:"groups"`
-}
-
-type AdminSetGroupMessageRequest struct {
-	Group GroupObject `json:"group"`
-}
-
-type AdminSetGroupMessageResponse struct {
-	Group GroupObject `json:"group"`
-}
-
-type AdminDeleteGroupMessageRequest struct {
-	GroupID string `json:"group_id"`
-}
-
-type AdminGetGroupsMessageResponse struct {
-	Groups []GroupObject `json:"groups"`
 }

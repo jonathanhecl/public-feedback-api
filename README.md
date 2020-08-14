@@ -9,8 +9,5 @@
 
 ```
     **Admin**
-    Authorization by header required
 ```
-* GET /admin/groups - List groups with details
-* POST /admin/groups - New or edit a group
-* DELETE /admin/groups - Delete a group
+Emails and moderators are controlled by Google Spreadsheets

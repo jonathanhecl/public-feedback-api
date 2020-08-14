@@ -9,13 +9,15 @@ import (
 )
 
 type DataStore struct {
-	client   *mongo.Client
-	mongoDb  string
-	messages *mongo.Collection
-	groups   *mongo.Collection
+	googleCert       string
+	groupSpreadsheet string
+	client           *mongo.Client
+	mongoDb          string
+	messages         *mongo.Collection
+	moderation       *mongo.Collection
 }
 
-func InitDatabase(mongoUri string, mongoDb string) *DataStore {
+func InitDatabase(mongoUri string, mongoDb string, googleCert string, groupSpreadsheet string) *DataStore {
 
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoUri).SetRetryWrites(false))
 	if err != nil {
@@ -28,10 +30,12 @@ func InitDatabase(mongoUri string, mongoDb string) *DataStore {
 	}
 
 	return &DataStore{
-		client:   client,
-		mongoDb:  mongoDb,
-		messages: client.Database(mongoDb).Collection("messages"),
-		groups:   client.Database(mongoDb).Collection("groups"),
+		googleCert:       googleCert,
+		groupSpreadsheet: groupSpreadsheet,
+		client:           client,
+		mongoDb:          mongoDb,
+		messages:         client.Database(mongoDb).Collection("messages"),
+		moderation:       client.Database(mongoDb).Collection("moderation"),
 	}
 }
 

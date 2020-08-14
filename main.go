@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"./database"
 	"./endpoint"
@@ -25,10 +26,17 @@ func main() {
 	fmt.Println(serverName + " v" + serverVer)
 
 	// MongoDB
-	db := database.InitDatabase(mongoUri, mongoDb)
+	db := database.InitDatabase(mongoUri, mongoDb, googleCert, groupSpreadsheet)
 	defer database.CloseDatabase(db)
 	extras.InitExtras(mailDomain, mailAPIKey, adminPassword)
 	endpoint.InitEndpoint(db)
+
+	go func() {
+		db.LoadGroups()
+		for range time.Tick(30 * time.Minute) {
+			db.LoadGroups()
+		}
+	}()
 
 	// Routes
 	r := Routes()

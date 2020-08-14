@@ -1,6 +1,7 @@
 package models
 
 type MessageObject struct {
+	Name    string `json:"name"`
 	Email   string `json:"email"`
 	Message string `json:"message"`
 	GroupID string `json:"group_id"`

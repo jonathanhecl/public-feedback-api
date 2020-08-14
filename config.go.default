@@ -2,7 +2,7 @@ package main
 
 var (
 	serverName  = "PublicFeedback Core API"
-	serverVer   = "0.0.2"
+	serverVer   = "0.0.3"
 	mongoUri    = "mongodb://***"
 	mongoDb     = "****"
 	tokenSecret = "****"
@@ -13,4 +13,8 @@ var (
 	mailDomain  = "*****"
 	mailAPIKey  = "*****"
 	adminPassword = "123456789"
+	googleCert    = `{}`
+	groupSpreadsheet = ""
+	minModApproves = 1
+	messageExpiration = time.Hour * 24
 )

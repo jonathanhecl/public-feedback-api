@@ -3,16 +3,13 @@ package models
 import "time"
 
 type GroupObject struct {
-	GroupID   string    `bson:"id" json:"id"`
-	Title     string    `bson:"title" json:"title"`
-	Members   string    `bson:"members" json:"members"` // JSON struct
-	Enabled   bool      `bson:"enabled" json:"enabled"`
-	CreatedAt time.Time `bson:"created_at" json:"created_at"`
-	UpdatedAt time.Time `bson:"updated_at" json:"updated_at"`
+	GroupID   string        `json:"group_id" bson:"group_id"`
+	Label     string        `json:"label" bson:"label"`
+	Members   []MemberGroup `json:"members" bson:"members"`
+	UpdatedAt time.Time     `json:"updated_at" bson:"updated_at"`
 }
 
-type MemberGroupObject struct {
-	Name    string `bson:"name" json:"name"`
-	Email   string `bson:"email" json:"email"`
-	Enabled bool   `bson:"enabled" json:"enabled"`
+type MemberGroup struct {
+	Name  string `json:"name" bson:"name" `
+	Email string `json:"email" bson:"email" `
 }
