@@ -35,10 +35,11 @@ func EmailModerationWait(MessageID string) {
 	}
 
 	for m := range mds.Members {
+		code := extras.GenerateModeratorLink(msg.MessageID, msg.CreatedAt, mds.Members[m].Email)
 		extras.SendEmail(fmt.Sprintf("%s <%s>", mds.Members[m].Name, mds.Members[m].Email), "Moderation "+msg.MessageID, `Moderation
-			👍 Approve .../moderation/`+msg.MessageID+`/approved/`+extras.GenerateModeratorLink(msg.MessageID, msg.CreatedAt, mds.Members[m].Email)+`
+			👍 Approve .../moderation/`+msg.MessageID+`/approved/`+code+`
 
-			👎 Disapproved .../moderation/`+msg.MessageID+`/disapproved/`+extras.GenerateModeratorLink(msg.MessageID, msg.CreatedAt, mds.Members[m].Email)+``)
+			👎 Disapproved .../moderation/`+msg.MessageID+`/disapproved/`+code+``)
 	}
 
 	return
@@ -81,7 +82,11 @@ func EmailModerationConfirm(MessageID string) {
 			return
 		}
 		for m := range gms.Members {
-			extras.SendEmail(fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email), "Email de "+msg.Email, msg.Message+"\nTracking: "+"\nResponder: ")
+			code := extras.GenerateMemberLink(msg.MessageID, msg.CreatedAt, gms.Members[m].Email)
+			extras.SendEmail(fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email), "Email de "+msg.Email, msg.Message+`
+			Tracking .../tracking/`+msg.MessageID+`/`+code+`/pixel.gif
+
+			Reply .../feedback/`+msg.MessageID+`/`+code+`/`)
 		}
 		err = ep.db.SetMessageSended(msg.MessageID)
 		if err != nil {

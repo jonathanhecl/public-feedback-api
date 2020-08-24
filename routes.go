@@ -54,15 +54,15 @@ func Routes() chi.Router {
 
 		//<img src="https://www.populeaks.com/tracking/pixel.gif?id=38473847-54545-6565656&cp=abc8347837483" /> 1x1
 		r.Route("/tracking", func(r chi.Router) { // TODO:
-			r.Get("/pixel.gif", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Pixel de lectura del correo (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+			r.Get("/{id}/{code}/pixel.gif", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Pixel de lectura del correo (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
 		})
 
 		// PAGINA de RESPUESTA del politico
 
 		// https://www.populeaks.com/feedback/38473847-54545-6565656/?cp=abc8347837483 RESPONDER
 		r.Route("/feedback", func(r chi.Router) { // TODO:
-			r.Get("/{id}", http.HandlerFunc(endpoint.HandleGetGroupsMessage))  // TODO: Lee el mensaje del usuario, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
-			r.Post("/{id}", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
+			r.Get("/{id}/{code}/", http.HandlerFunc(endpoint.HandleGetGroupsMessage))  // TODO: Lee el mensaje del usuario, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+			r.Post("/{id}/{code}/", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
 		})
 
 		/*
