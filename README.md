@@ -11,3 +11,5 @@
     **Admin**
 ```
 Emails and moderators are controlled by Google Spreadsheets
+* GET /moderation/[ID]/approved/[CODE] - Approve a message
+* GET /moderation/[ID]/disapproved/[CODE] - Disapprove a message

@@ -6,7 +6,7 @@ import (
 	"../extras"
 )
 
-func EmailConfirmation(MessageID string) {
+func EmailUserConfirmation(MessageID string) {
 
 	msg, err := ep.db.GetMessage(MessageID)
 	if err != nil {
@@ -20,7 +20,7 @@ func EmailConfirmation(MessageID string) {
 
 }
 
-func EmailWaitModeration(MessageID string) {
+func EmailModerationWait(MessageID string) {
 
 	msg, err := ep.db.GetMessage(MessageID)
 	if err != nil {
@@ -42,5 +42,61 @@ func EmailWaitModeration(MessageID string) {
 	}
 
 	return
+
+}
+
+func EmailModerationConfirm(MessageID string) {
+
+	msg, err := ep.db.GetMessage(MessageID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	mds, err := ep.db.GetGroup("MOD")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	vmsg, err := ep.db.GetModerationVote(MessageID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	votes := 0
+	approve := 0
+	for v := range vmsg.Votes {
+		votes++
+		if vmsg.Votes[v].IsApprove {
+			approve++
+		}
+	}
+
+	if append >= ep.minModApproves {
+		gms, err := ep.db.GetGroup(msg.GroupID)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for m := range gms.Members {
+			extras.SendEmail(fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email), "Email de "+msg.Email, msg.Message+"\nTracking: "+"\nResponder: ")
+		}
+		err = ep.db.SetMessageSended(msg.MessageID)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		return
+	}
+
+	if votes >= len(mds.Members) {
+		err = ep.db.SetMessageClosed(msg.MessageID)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
 
 }
