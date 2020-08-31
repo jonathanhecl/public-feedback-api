@@ -4,6 +4,8 @@
 *.dll
 *.so
 *.dylib
+*.yaml
+*.json
 config.go
 
 # Test binary, built with `go test -c`
@@ -13,4 +15,5 @@ config.go
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+Godeps/
+vendor/
