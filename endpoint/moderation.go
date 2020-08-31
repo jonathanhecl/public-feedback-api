@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"../extras"
 	"github.com/go-chi/chi"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
 // HandleModerationApproved - Handle ModerationApproved
@@ -48,12 +48,12 @@ func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ip := GetIP(r)
+	ip := extras.GetIP(r)
 	userAgent := r.UserAgent()
 
-	err := ep.db.SetModerationVote(MessageID, email, true, ip, userAgent)
+	err = ep.db.SetModerationVote(MessageID, email, true, ip, userAgent)
 	if err != nil {
-		if strings.Contains(err.Errors(), "Moderator already voted") {
+		if strings.Contains(err.Error(), "Moderator already voted") {
 			ErrorResponse(w, r, err)
 		}
 		ErrorResponse(w, r, errors.New("Internal error."))
@@ -101,12 +101,12 @@ func HandleModerationDisapproved(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ip := GetIP(r)
+	ip := extras.GetIP(r)
 	userAgent := r.UserAgent()
 
-	err := ep.db.SetModerationVote(MessageID, email, false, ip, userAgent)
+	err = ep.db.SetModerationVote(MessageID, mod, false, ip, userAgent)
 	if err != nil {
-		if strings.Contains(err.Errors(), "Moderator already voted") {
+		if strings.Contains(err.Error(), "Moderator already voted") {
 			ErrorResponse(w, r, err)
 		}
 		ErrorResponse(w, r, errors.New("Internal error."))

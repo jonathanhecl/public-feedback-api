@@ -75,8 +75,8 @@ func EmailModerationConfirm(MessageID string) {
 		}
 	}
 
-	if append >= ep.minModApproves {
-		gms, err := ep.db.GetGroup(msg.GroupID)
+	if approve >= ep.minModApproves {
+		gms, err := ep.db.GetGroup(msg.ToGroup)
 		if err != nil {
 			fmt.Println(err)
 			return

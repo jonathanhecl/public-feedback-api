@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/globalsign/mgo/bson"
+	"github.com/jonathanhecl/public-feedback-api/database/models"
 )
 
 func (db DataStore) GetModerationVote(MessageID string) (models.ModerationObject, error) {
