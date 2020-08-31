@@ -6,7 +6,6 @@
 *.dylib
 *.yaml
 *.json
-config.go
 
 # Test binary, built with `go test -c`
 *.test

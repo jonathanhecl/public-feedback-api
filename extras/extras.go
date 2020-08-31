@@ -9,10 +9,10 @@ type exStr struct {
 
 var ex *exStr
 
-func InitExtras(mailDomain string, mailAPIKey string, adminPassword string) {
+func InitExtras(mailDomain string, mailAPIKey string, Secret string) {
 	ex = &exStr{
 		mg: mailgun.NewMailgun(mailDomain, mailAPIKey),
-		ps: adminPassword,
+		ps: Secret,
 	}
 	return
 }

@@ -1,5 +1,13 @@
 # public-feedback-api
 
+## Environment required
+
+* PORT
+* MONGODB
+* SECRET
+* GOOGLECERT
+* GOOGLEGROUP
+
 ## Endpoints
 
 * POST /message - New message

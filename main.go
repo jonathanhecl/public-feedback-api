@@ -4,31 +4,53 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/jonathanhecl/public-feedback-api/database"
 	"github.com/jonathanhecl/public-feedback-api/endpoint"
 
 	"github.com/jonathanhecl/public-feedback-api/extras"
-
-	"github.com/go-chi/jwtauth"
 )
-
-var tokenAuth *jwtauth.JWTAuth
-
-func init() {
-	tokenAuth = jwtauth.New("HS256", []byte(tokenSecret), nil)
-}
 
 func main() {
 	var err error
 
+	PORT := os.Getenv("PORT")
+	if len(PORT) == 0 {
+		PORT = port
+	}
+	MONGODB := os.Getenv("MONGODB")
+	if len(MONGODB) == 0 {
+		MONGODB = mongoDB
+	}
+	GOOGLECERT := os.Getenv("GOOGLECERT")
+	if len(GOOGLECERT) == 0 {
+		GOOGLECERT = googleCert
+	}
+	GOOGLEGROUP := os.Getenv("GOOGLEGROUP")
+	if len(GOOGLEGROUP) == 0 {
+		GOOGLEGROUP = googleGroup
+	}
+	SECRET := os.Getenv("SECRET")
+	if len(SECRET) == 0 {
+		SECRET = secret
+	}
+	MAILDOMAIN := os.Getenv("MAILDOMAIN")
+	if len(MAILDOMAIN) == 0 {
+		MAILDOMAIN = mailDomain
+	}
+	MAILAPIKEY := os.Getenv("MAILAPIKEY")
+	if len(MAILAPIKEY) == 0 {
+		MAILAPIKEY = mailAPIKey
+	}
+
 	fmt.Println(serverName + " v" + serverVer)
 
 	// MongoDB
-	db := database.InitDatabase(mongoUri, mongoDb, googleCert, groupSpreadsheet)
+	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
-	extras.InitExtras(mailDomain, mailAPIKey, adminPassword)
+	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET)
 	endpoint.InitEndpoint(db, minModApproves)
 
 	go func() {
@@ -42,8 +64,8 @@ func main() {
 	r := Routes()
 
 	// Listen and Server
-	fmt.Println("Ready... Listen " + portHTTPS + " port...")
-	err = http.ListenAndServeTLS(":"+portHTTPS, "server.crt", "server.key", extras.LogRequest(r)) // HTTPS
+	fmt.Println("Ready... Listen " + PORT + " port...")
+	err = http.ListenAndServeTLS(":"+PORT, "server.crt", "server.key", extras.LogRequest(r)) // HTTPS
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
