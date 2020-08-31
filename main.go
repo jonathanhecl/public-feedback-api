@@ -65,7 +65,7 @@ func main() {
 
 	// Listen and Server
 	fmt.Println("Ready... Listen " + PORT + " port...")
-	err = http.ListenAndServeTLS(":"+PORT, "server.crt", "server.key", extras.LogRequest(r)) // HTTPS
+	err = http.ListenAndServe(":"+PORT, extras.LogRequest(r)) // HTTP
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

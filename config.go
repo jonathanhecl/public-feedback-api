@@ -8,7 +8,7 @@ var (
 	logPath           = "development.log"
 	minModApproves    = 2
 	messageExpiration = time.Hour * 24
-	port              = "443"
+	port              = "8080"
 	mongoDB           = ""
 	googleCert        = ""
 	googleGroup       = ""
