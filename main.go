@@ -29,7 +29,7 @@ func main() {
 	db := database.InitDatabase(mongoUri, mongoDb, googleCert, groupSpreadsheet)
 	defer database.CloseDatabase(db)
 	extras.InitExtras(mailDomain, mailAPIKey, adminPassword)
-	endpoint.InitEndpoint(db)
+	endpoint.InitEndpoint(db, minModApproves)
 
 	go func() {
 		db.LoadGroups()

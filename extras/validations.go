@@ -38,3 +38,14 @@ func GenerateModeratorLink(messageID string, createdAt time.Time, emailModerator
 	return fmt.Sprintf("%x", h.Sum(nil))
 
 }
+
+func GenerateMemberLink(messageID string, createdAt time.Time, emailMember string) string {
+
+	h := sha1.New()
+	io.WriteString(h, ex.ps)
+	io.WriteString(h, messageID)
+	io.WriteString(h, createdAt.String())
+	io.WriteString(h, emailMember)
+	return fmt.Sprintf("%x", h.Sum(nil))
+
+}

@@ -14,6 +14,47 @@ import (
 	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
+func (db DataStore) SetMessageSended(MessageID string) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	var msg models.MessageObject
+	q := bson.M{"id": MessageID}
+	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
+		return errors.New("Message not found")
+	}
+	set := bson.M{"$set": bson.M{
+		"sended_at": time.Now(),
+		"closed_at": time.Now(),
+	}}
+	if _, err := db.messages.UpdateOne(ctx, q, set); err != nil {
+		log.Println("Database->SetMessageSended: " + err.Error())
+		return err
+	}
+	return nil
+
+}
+
+func (db DataStore) SetMessageClosed(MessageID string) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	var msg models.MessageObject
+	q := bson.M{"id": MessageID}
+	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
+		return errors.New("Message not found")
+	}
+	set := bson.M{"$set": bson.M{
+		"closed_at": time.Now(),
+	}}
+	if _, err := db.messages.UpdateOne(ctx, q, set); err != nil {
+		log.Println("Database->SetMessageClosed: " + err.Error())
+		return err
+	}
+	return nil
+
+}
+
 func (db DataStore) GetMessagesPending() ([]models.MessageObject, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)

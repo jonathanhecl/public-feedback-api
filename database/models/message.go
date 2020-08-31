@@ -14,5 +14,5 @@ type MessageObject struct {
 	CreatedAt        time.Time `bson:"created_at" json:"created_at"`
 	ConfirmedAt      time.Time `bson:"confirmed_at" json:"confirmed_at"` // 0 = not confirmed
 	SendedAt         time.Time `bson:"sended_at" json:"sended_at"`       // 0 = not sended
-	ClosedAt         time.Time `bson:"closed_at" json:"closed_at"`       // 0 = not clossed
+	ClosedAt         time.Time `bson:"closed_at" json:"closed_at"`       // 0 = not closed
 }
