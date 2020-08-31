@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"./endpoint"
+	"github.com/jonathanhecl/public-feedback-api/endpoint"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"

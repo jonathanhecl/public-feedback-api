@@ -10,8 +10,8 @@ import (
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"../extras"
-	"./models"
+	"github.com/jonathanhecl/public-feedback-api/database/models"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
 func (db DataStore) GetMessagesPending() ([]models.MessageObject, error) {

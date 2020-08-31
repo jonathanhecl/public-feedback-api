@@ -1,6 +1,6 @@
 package endpoint
 
-import "../database"
+import "github.com/jonathanhecl/public-feedback-api/database"
 
 type epStr struct {
 	db *database.DataStore

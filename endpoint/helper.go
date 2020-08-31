@@ -5,19 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"./models"
 	"github.com/go-chi/render"
+	"github.com/jonathanhecl/public-feedback-api/endpoint/models"
 )
-
-func GetIP(r *http.Request) string {
-
-	forwarded := r.Header.Get("X-FORWARDED-FOR")
-	if forwarded != "" {
-		return forwarded
-	}
-	return r.RemoteAddr
-
-}
 
 func DecodeRequest(w http.ResponseWriter, r *http.Request, req interface{}) error {
 

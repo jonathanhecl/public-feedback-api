@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"../extras"
-	"./models"
+	"github.com/jonathanhecl/public-feedback-api/endpoint/models"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
 // HandleNewMessage - Handle New Message
@@ -44,7 +44,7 @@ func HandleNewMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ip := GetIP(r)
+	ip := extras.GetIP(r)
 	userAgent := r.UserAgent()
 
 	messageID, err := ep.db.NewMessage(req.Email, req.Name, req.Message, req.GroupID, ip, userAgent)

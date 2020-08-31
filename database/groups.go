@@ -10,8 +10,8 @@ import (
 	"golang.org/x/oauth2/google"
 	"gopkg.in/Iwark/spreadsheet.v2"
 
-	"../extras"
-	"./models"
+	"github.com/jonathanhecl/public-feedback-api/database/models"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
 var Groups []*models.GroupObject

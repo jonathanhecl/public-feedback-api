@@ -3,7 +3,7 @@ package endpoint
 import (
 	"fmt"
 
-	"../extras"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
 func EmailConfirmation(MessageID string) {

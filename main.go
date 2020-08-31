@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"./database"
-	"./endpoint"
+	"github.com/jonathanhecl/public-feedback-api/database"
+	"github.com/jonathanhecl/public-feedback-api/endpoint"
 
-	"./extras"
+	"github.com/jonathanhecl/public-feedback-api/extras"
 
 	"github.com/go-chi/jwtauth"
 )

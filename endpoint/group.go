@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"./models"
+	"github.com/jonathanhecl/public-feedback-api/endpoint/models"
 )
 
 // HandleGetGroupsMessage - Handle Get Groups Message

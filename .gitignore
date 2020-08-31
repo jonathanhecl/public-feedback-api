@@ -17,3 +17,8 @@ config.go
 # Dependency directories (remove the comment below to include it)
 Godeps/
 vendor/
+
+# heroku
+.env
+.docker_build/
+bin/

@@ -4,9 +4,23 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"io"
+	"net/http"
 	"regexp"
 	"time"
 )
+
+func GetIP(r *http.Request) string {
+
+	IPAddress := r.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarded-For")
+	}
+	if IPAddress == "" {
+		IPAddress = r.RemoteAddr
+	}
+	return IPAddress
+
+}
 
 func ValidateEmail(email string) bool {
 
