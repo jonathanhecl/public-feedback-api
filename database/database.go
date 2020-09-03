@@ -23,17 +23,17 @@ func InitDatabase(mongoUri string, googleCert string, groupSpreadsheet string) *
 
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoUri).SetRetryWrites(false))
 	if err != nil {
-		log.Fatal("Database->InitDatabase", err)
+		log.Fatal("Database->InitDatabase: ", err)
 	}
 
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
-		log.Fatal("Database->InitDatabase", err)
+		log.Fatal("Database->InitDatabase: ", err)
 	}
 
 	mongoDb, err := url.Parse(mongoUri)
 	if err != nil {
-		log.Fatal("Database->InitDatabase", err)
+		log.Fatal("Database->InitDatabase: ", err)
 	}
 
 	return &DataStore{
@@ -49,6 +49,6 @@ func InitDatabase(mongoUri string, googleCert string, groupSpreadsheet string) *
 func CloseDatabase(db *DataStore) {
 	err := db.client.Disconnect(context.Background())
 	if err != nil {
-		log.Fatal("Database->CloseDatabase", err)
+		log.Fatal("Database->CloseDatabase: ", err)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-chi/render"
 	"github.com/jonathanhecl/public-feedback-api/database"
 	"github.com/jonathanhecl/public-feedback-api/endpoint"
 
@@ -69,4 +70,16 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+}
+
+func HandleGetStatus(w http.ResponseWriter, r *http.Request) {
+
+	type mStatus struct {
+		Version string `json:"version"`
+	}
+
+	render.Status(r, 200)
+	render.JSON(w, r, mStatus{
+		Version: serverName + " v" + serverVer,
+	})
 }

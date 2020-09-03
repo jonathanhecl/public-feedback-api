@@ -14,6 +14,7 @@
 * POST /message/confirm - Confirm message
 * GET /message/resend - Resend confirmation
 * GET /groups - List groups
+* GET /status - Get status API
 
 ```
     **Admin**

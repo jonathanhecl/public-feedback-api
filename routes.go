@@ -30,6 +30,8 @@ func Routes() chi.Router {
 
 	r.Group(func(r chi.Router) {
 
+		r.Get("/status", http.HandlerFunc(HandleGetStatus))
+
 		// PAGINA DE ENVIO DE MENSAJE del usuario
 
 		r.Get("/groups", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // Get groups use ISO 2 chars for country
