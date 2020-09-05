@@ -14,6 +14,8 @@ import (
 	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
+var started = time.Now()
+
 func main() {
 	var err error
 
@@ -75,11 +77,15 @@ func main() {
 func HandleGetStatus(w http.ResponseWriter, r *http.Request) {
 
 	type mStatus struct {
+		Server  string `json:"server"`
 		Version string `json:"version"`
+		Online  string `json:"online"`
 	}
 
 	render.Status(r, 200)
 	render.JSON(w, r, mStatus{
-		Version: serverName + " v" + serverVer,
+		Server:  serverName,
+		Version: serverVer,
+		Online:  time.Since(started).String(),
 	})
 }
