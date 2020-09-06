@@ -15,6 +15,7 @@
 * GET /message/resend - Resend confirmation
 * GET /groups - List groups
 * GET /status - Get status API
+* GET /tracking/[ID]/[CODE]/pixel.gif - Pixel Tracking
 
 ```
     **Admin**

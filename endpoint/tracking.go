@@ -36,6 +36,15 @@ func HandleTrackingPixel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ip := extras.GetIP(r)
+	userAgent := r.UserAgent()
+
+	err = ep.db.SetTracking(messageID, msg.ToGroup, email, ip, userAgent)
+	if err != nil {
+		PixelResponse(w, r)
+		return
+	}
+
 	PixelResponse(w, r)
 
 }
