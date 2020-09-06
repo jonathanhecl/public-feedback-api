@@ -1,6 +1,7 @@
 package endpoint
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -39,5 +40,15 @@ func SuccessResponseInterface(w http.ResponseWriter, r *http.Request, s interfac
 
 	render.Status(r, 200)
 	render.JSON(w, r, s)
+
+}
+
+func PixelResponse(w http.ResponseWriter, r *http.Request) {
+
+	render.Status(r, 200)
+	w.Header().Set("Content-Type", "image/gif")
+	output, _ := base64.StdEncoding.DecodeString("R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=")
+	//io.WriteString(w, string(output))
+	render.Respond(w, r, output)
 
 }

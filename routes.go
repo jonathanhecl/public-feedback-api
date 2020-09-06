@@ -52,11 +52,9 @@ func Routes() chi.Router {
 			r.Get("/{id}/disapproved/{code}", http.HandlerFunc(endpoint.HandleModerationDisapproved))
 		})
 
-		// TODO: cp=debe generarse diferente por mensaje y politico
-
-		//<img src="https://www.populeaks.com/tracking/pixel.gif?id=38473847-54545-6565656&cp=abc8347837483" /> 1x1
-		r.Route("/tracking", func(r chi.Router) { // TODO:
-			r.Get("/{id}/{code}/pixel.gif", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Pixel de lectura del correo (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+		//<img src="https://www.populeaks.com/tracking/38473847-54545-6565656/abc8347837483/pixel.gif" /> 1x1
+		r.Route("/tracking", func(r chi.Router) {
+			r.Get("/{id}/{code}/pixel.gif", http.HandlerFunc(endpoint.HandleTrackingPixel))
 		})
 
 		// PAGINA de RESPUESTA del politico

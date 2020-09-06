@@ -12,8 +12,8 @@ import (
 // HandleModerationApproved - Handle ModerationApproved
 func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 
-	MessageID := chi.URLParam(r, "id")
-	msg, err := ep.db.GetMessage(MessageID)
+	messageID := chi.URLParam(r, "id")
+	msg, err := ep.db.GetMessage(messageID)
 	if err != nil {
 		ErrorResponse(w, r, errors.New("Message not found"))
 		return
@@ -29,7 +29,6 @@ func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 	}
 
 	code := chi.URLParam(r, "code")
-
 	mds, err := ep.db.GetGroup("MOD")
 	if err != nil {
 		ErrorResponse(w, r, errors.New("No groups settings"))
@@ -51,7 +50,7 @@ func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 	ip := extras.GetIP(r)
 	userAgent := r.UserAgent()
 
-	err = ep.db.SetModerationVote(MessageID, email, true, ip, userAgent)
+	err = ep.db.SetModerationVote(messageID, email, true, ip, userAgent)
 	if err != nil {
 		if strings.Contains(err.Error(), "Moderator already voted") {
 			ErrorResponse(w, r, err)
