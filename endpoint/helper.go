@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -48,7 +49,6 @@ func PixelResponse(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, 200)
 	w.Header().Set("Content-Type", "image/gif")
 	output, _ := base64.StdEncoding.DecodeString("R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=")
-	//io.WriteString(w, string(output))
-	render.Respond(w, r, output)
+	io.WriteString(w, string(output))
 
 }
