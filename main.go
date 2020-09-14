@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/go-chi/render"
@@ -27,6 +28,10 @@ func main() {
 	if len(MONGODB) == 0 {
 		MONGODB = mongoDB
 	}
+	SECRET := os.Getenv("SECRET")
+	if len(SECRET) == 0 {
+		SECRET = secret
+	}
 	GOOGLECERT := os.Getenv("GOOGLECERT")
 	if len(GOOGLECERT) == 0 {
 		GOOGLECERT = googleCert
@@ -35,9 +40,9 @@ func main() {
 	if len(GOOGLEGROUP) == 0 {
 		GOOGLEGROUP = googleGroup
 	}
-	SECRET := os.Getenv("SECRET")
-	if len(SECRET) == 0 {
-		SECRET = secret
+	MINAPPROVED, err := strconv.Atoi(os.Getenv("MINAPPROVED"))
+	if err != nil {
+		MINAPPROVED = minApproved
 	}
 	MAILDOMAIN := os.Getenv("MAILDOMAIN")
 	if len(MAILDOMAIN) == 0 {
@@ -49,12 +54,13 @@ func main() {
 	}
 
 	fmt.Println(serverName + " v" + serverVer)
+	fmt.Println("Min. Approved: ", MINAPPROVED)
 
 	// MongoDB
 	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
 	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET)
-	endpoint.InitEndpoint(db, minModApproves)
+	endpoint.InitEndpoint(db, MINAPPROVED)
 
 	go func() {
 		db.LoadGroups()

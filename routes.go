@@ -38,6 +38,7 @@ func Routes() chi.Router {
 			r.Post("/", http.HandlerFunc(endpoint.HandleNewMessage))                    // Post a new message
 			r.Post("/confirm", http.HandlerFunc(endpoint.HandleConfirmMessage))         // Confirm a message (with the email)
 			r.Get("/resend", http.HandlerFunc(endpoint.HandleRetryConfirmationMessage)) // Resend email to confirm a message
+			r.Get("/{id}", http.HandlerFunc(endpoint.HandleGetMessage))                 // Get a message
 		})
 
 		//api.populeaks.com/348983748734/moderation/approved/38473847-54545-6565656/ APPROVED
@@ -54,8 +55,7 @@ func Routes() chi.Router {
 		})
 
 		// https://www.populeaks.com/feedback/38473847-54545-6565656/?cp=abc8347837483 RESPONDER
-		r.Route("/feedback", func(r chi.Router) { // TODO:
-			r.Get("/{id}/{code}/", http.HandlerFunc(endpoint.HandleGetGroupsMessage))  // TODO: Lee el mensaje del usuario, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?))
+		r.Route("/feedback", func(r chi.Router) {
 			r.Post("/{id}/{code}/", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
 		})
 

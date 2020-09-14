@@ -6,9 +6,34 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/jonathanhecl/public-feedback-api/endpoint/models"
 	"github.com/jonathanhecl/public-feedback-api/extras"
 )
+
+// HandleGetMessage - Handle Get Message
+func HandleGetMessage(w http.ResponseWriter, r *http.Request) {
+
+	messageID := chi.URLParam(r, "id")
+	msg, err := ep.db.GetMessage(messageID)
+	if err != nil {
+		ErrorResponse(w, r, errors.New("Message not found"))
+		return
+	}
+
+	var res models.GetMessageResponse
+
+	res.Name = msg.Name
+	res.Message = msg.Message
+	res.ToGroup = msg.ToGroup
+	res.CreatedAt = msg.CreatedAt.Unix()
+	res.SendedAt = msg.SendedAt.Unix()
+
+	// TODO: Prevent message not sended (SendedAt==0)
+
+	SuccessResponseInterface(w, r, res)
+
+}
 
 // HandleNewMessage - Handle New Message
 func HandleNewMessage(w http.ResponseWriter, r *http.Request) {
