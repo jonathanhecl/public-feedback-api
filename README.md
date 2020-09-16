@@ -23,7 +23,7 @@
 
 ## Feedback
 
-* POST /feedback/[ID]/[CODE] - Send a reply message to the author (TODO)
+* POST /feedback/[ID]/[CODE] - Send a reply message to the author
 
 ## Administration
 
