@@ -56,7 +56,7 @@ func Routes() chi.Router {
 
 		// https://www.populeaks.com/feedback/38473847-54545-6565656/?cp=abc8347837483 RESPONDER
 		r.Route("/feedback", func(r chi.Router) {
-			r.Post("/{id}/{code}/", http.HandlerFunc(endpoint.HandleGetGroupsMessage)) // TODO: Responde el mensaje al autor, requiere correo del politico base64 (guarda IP, User-Agent, ID de correo, correo del politico (base64?)) El mensaje por defecto es tipo privado. Solo puede enviar una respuesta.
+			r.Post("/{id}/{code}/", http.HandlerFunc(endpoint.HandleSendFeedbackMessage))
 		})
 
 	})

@@ -18,6 +18,7 @@ type DataStore struct {
 	messages         *mongo.Collection
 	moderation       *mongo.Collection
 	tracking         *mongo.Collection
+	feedback         *mongo.Collection
 }
 
 func InitDatabase(mongoUri string, googleCert string, groupSpreadsheet string) *DataStore {
@@ -45,6 +46,7 @@ func InitDatabase(mongoUri string, googleCert string, groupSpreadsheet string) *
 		messages:         client.Database(path.Base(mongoDb.Path)).Collection("messages"),
 		moderation:       client.Database(path.Base(mongoDb.Path)).Collection("moderation"),
 		tracking:         client.Database(path.Base(mongoDb.Path)).Collection("tracking"),
+		feedback:         client.Database(path.Base(mongoDb.Path)).Collection("feedback"),
 	}
 }
 

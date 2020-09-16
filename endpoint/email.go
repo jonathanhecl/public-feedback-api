@@ -105,3 +105,34 @@ func EmailModerationConfirm(MessageID string) {
 	}
 
 }
+
+func EmailFeedbackUser(FeedbackID string) {
+
+	fbk, err := ep.db.GetFeedback(FeedbackID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	msg, err := ep.db.GetMessage(fbk.MessageID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	name := ""
+	gms, err := ep.db.GetGroup(fbk.ToGroup)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for m := range gms.Members {
+		if gms.Members[m].Email == fbk.Email {
+			name = gms.Members[m].Name
+			break
+		}
+	}
+
+	extras.SendEmail(fmt.Sprintf("%s <%s>", msg.Name, msg.Email), "Feedback "+name, `Feedback message`+fbk.Message)
+
+}

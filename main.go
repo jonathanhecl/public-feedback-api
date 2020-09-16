@@ -56,6 +56,8 @@ func main() {
 	fmt.Println(serverName + " v" + serverVer)
 	fmt.Println("Min. Approved: ", MINAPPROVED)
 
+	time.Sleep(5 * time.Second)
+
 	// MongoDB
 	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
