@@ -27,8 +27,8 @@ func (db DataStore) SetModerationVote(MessageID string, Email string, IsApprove 
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	var msg models.ModerationObject
 	new := false
+	var msg models.ModerationObject
 	q := bson.M{"id": MessageID}
 	if err := db.moderation.FindOne(ctx, q).Decode(&msg); err != nil {
 		new = true
