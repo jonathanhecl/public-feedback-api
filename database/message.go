@@ -87,20 +87,20 @@ func (db DataStore) GetMessagesPending() ([]models.MessageObject, error) {
 
 }
 
-func (db DataStore) GetMessage(MessageID string) (models.MessageObject, error) {
+func (db DataStore) GetMessage(MessageID string) (*models.MessageObject, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	var msg models.MessageObject
+	var msg *models.MessageObject
 
 	fmt.Println("DB->GetMessage MSGID", MessageID)
 
 	q := bson.M{"id": MessageID}
 	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
-		return msg, errors.New("Message not found")
+		return nil, errors.New("Message not found")
 	}
 
-	fmt.Println("DB->GetMessage", msg)
+	fmt.Println("DB->GetMessage", &msg, msg)
 
 	return msg, nil
 
