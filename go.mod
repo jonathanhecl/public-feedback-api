@@ -12,8 +12,8 @@ require (
 	github.com/go-chi/render v1.0.1
 	github.com/google/uuid v1.1.2
 	github.com/mailgun/mailgun-go v2.0.0+incompatible
-	github.com/onsi/ginkgo v1.14.0 // indirect
-	go.mongodb.org/mongo-driver v1.4.0
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+	github.com/onsi/ginkgo v1.14.1 // indirect
+	go.mongodb.org/mongo-driver v1.4.1
+	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 	gopkg.in/Iwark/spreadsheet.v2 v2.0.0-20191122095212-08231195c43b
 )
