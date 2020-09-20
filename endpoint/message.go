@@ -23,6 +23,8 @@ func HandleGetMessage(w http.ResponseWriter, r *http.Request) {
 
 	var res models.GetMessageResponse
 
+	fmt.Println(msg)
+
 	res.Name = msg.Name
 	res.Message = msg.Message
 	res.ToGroup = msg.ToGroup
