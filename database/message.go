@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"time"
 
@@ -91,10 +92,16 @@ func (db DataStore) GetMessage(MessageID string) (models.MessageObject, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	var msg models.MessageObject
+
+	fmt.Println("DB->GetMessage MSGID", MessageID)
+
 	q := bson.M{"id": MessageID}
 	if err := db.messages.FindOne(ctx, q).Decode(&msg); err != nil {
 		return msg, errors.New("Message not found")
 	}
+
+	fmt.Println("DB->GetMessage", msg)
+
 	return msg, nil
 
 }
