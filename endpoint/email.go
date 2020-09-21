@@ -136,7 +136,7 @@ func EmailFeedbackUser(FeedbackID string) {
 		}
 	}
 
-	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email) // TODO: Careful!
-	extras.SendEmail("populeaks.com@gmail.com", "Feedback "+name, `Feedback message`+fbk.Message)
+	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
+	extras.SendEmail(msg.Email, "Feedback "+name, `Feedback message`+fbk.Message)
 
 }
