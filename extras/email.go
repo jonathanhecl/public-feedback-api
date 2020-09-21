@@ -13,14 +13,16 @@ func SendEmail(To string, Subject string, Message string) error {
 
 	fmt.Println("Email sended ", Subject, " to ", To, " with message ", Message)
 
-	email := "From: " + ex.mailDomain
-	email = "\nTo: " + To
-	email = "\nSubject: " + Subject
-	email = "\n\n" + Message
+	/*
+		email := "From: " + ex.mailDomain
+		email = "\nTo: " + To
+		email = "\nSubject: " + Subject
+		email = "\n\n" + Message
+	*/
 
 	err := smtp.SendMail("smtp.gmail.com:587",
 		smtp.PlainAuth("", ex.mailDomain, ex.mailAPIKey, "smtp.gmail.com"),
-		ex.mailDomain, []string{To}, []byte(email))
+		ex.mailDomain, []string{To}, []byte(Message))
 
 	if err != nil {
 		fmt.Printf("smtp error: %s", err)
