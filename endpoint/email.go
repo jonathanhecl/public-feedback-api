@@ -14,7 +14,8 @@ func EmailUserConfirmation(MessageID string) {
 		return
 	}
 
-	extras.SendEmail(fmt.Sprintf("%s <%s>", msg.Name, msg.Email), "Confirmation "+msg.MessageID, "🔑 Confirmation Code: "+msg.ConfirmationCode)
+	//fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
+	extras.SendEmail(msg.Email, "Confirmation "+msg.MessageID, "🔑 Confirmation Code: "+msg.ConfirmationCode)
 
 	return
 

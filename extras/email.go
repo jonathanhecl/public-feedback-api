@@ -18,7 +18,7 @@ func SendEmail(To string, Subject string, Message string) error {
 	email = "\nSubject: " + Subject
 	email = "\n\n" + Message
 
-	fmt.Println("Step 1")
+	fmt.Println("Step 1: ", email)
 
 	err := smtp.SendMail("smtp.gmail.com:587",
 		smtp.PlainAuth("", ex.mailDomain, ex.mailAPIKey, "smtp.gmail.com"),
