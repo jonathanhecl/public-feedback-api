@@ -7,6 +7,7 @@ import (
 
 // Tutorial: https://devanswers.co/create-application-specific-password-gmail/
 // SMTP Password: https://security.google.com/settings/security/apppasswords
+// Enable Access: https://accounts.google.com/DisplayUnlockCaptcha
 
 func SendEmail(To string, Subject string, Message string) error {
 
@@ -23,6 +24,8 @@ func SendEmail(To string, Subject string, Message string) error {
 
 	if err != nil {
 		fmt.Printf("smtp error: %s", err)
+	} else {
+		fmt.Println("Sended OK")
 	}
 
 	return nil
