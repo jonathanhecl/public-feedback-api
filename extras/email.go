@@ -14,9 +14,9 @@ func SendEmail(To string, Subject string, Message string) error {
 	fmt.Println("Email sended ", Subject, " to ", To, " with message ", Message)
 
 	email := "From: " + ex.mailDomain
-	email = "\nTo: " + To
-	email = "\nSubject: " + Subject
-	email = "\n\n" + Message
+	email += "\nTo: " + To
+	email += "\nSubject: " + Subject
+	email += "\n\n" + Message
 
 	fmt.Println("Step 1: ", email)
 

@@ -15,7 +15,7 @@ func EmailUserConfirmation(MessageID string) {
 	}
 
 	//fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
-	extras.SendEmail(msg.Email, "Confirmation "+msg.MessageID, "🔑 Confirmation Code: "+msg.ConfirmationCode)
+	extras.SendEmail(msg.Email, "Confirmation "+msg.MessageID, "MessageID: "+msg.MessageID+"<br>🔑 Confirmation Code: "+msg.ConfirmationCode)
 
 	return
 
@@ -37,7 +37,8 @@ func EmailModerationWait(MessageID string) {
 
 	for m := range mds.Members {
 		code := extras.GenerateModeratorLink(msg.MessageID, msg.CreatedAt, mds.Members[m].Email)
-		extras.SendEmail(fmt.Sprintf("%s <%s>", mds.Members[m].Name, mds.Members[m].Email), "Moderation "+msg.MessageID, `Moderation
+		//fmt.Sprintf("%s <%s>", mds.Members[m].Name, mds.Members[m].Email)
+		extras.SendEmail(mds.Members[m].Email, "Moderation "+msg.MessageID, `Moderation
 			👍 Approve .../moderation/`+msg.MessageID+`/approved/`+code+`
 
 			👎 Disapproved .../moderation/`+msg.MessageID+`/disapproved/`+code+``)
@@ -84,7 +85,8 @@ func EmailModerationConfirm(MessageID string) {
 		}
 		for m := range gms.Members {
 			code := extras.GenerateMemberLink(msg.MessageID, msg.CreatedAt, gms.Members[m].Email)
-			extras.SendEmail(fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email), "Email de "+msg.Email, msg.Message+`
+			// fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email)
+			extras.SendEmail(gms.Members[m].Email, "Email de "+msg.Email, msg.Message+`
 			Tracking .../tracking/`+msg.MessageID+`/`+code+`/pixel.gif
 
 			Reply .../feedback/`+msg.MessageID+`/`+code+`/`)
@@ -134,6 +136,7 @@ func EmailFeedbackUser(FeedbackID string) {
 		}
 	}
 
-	extras.SendEmail(fmt.Sprintf("%s <%s>", msg.Name, msg.Email), "Feedback "+name, `Feedback message`+fbk.Message)
+	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email) // TODO: Careful!
+	extras.SendEmail("populeaks.com@gmail.com", "Feedback "+name, `Feedback message`+fbk.Message)
 
 }
