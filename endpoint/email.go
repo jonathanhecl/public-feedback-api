@@ -45,10 +45,18 @@ func EmailModerationWait(MessageID string) {
 	for m := range mds.Members {
 		code := extras.GenerateModeratorLink(msg.MessageID, msg.CreatedAt, mds.Members[m].Email)
 		//fmt.Sprintf("%s <%s>", mds.Members[m].Name, mds.Members[m].Email)
-		extras.SendEmail(mds.Members[m].Email, "Moderation "+msg.MessageID, `Moderation
-			👍 Approve .../moderation/`+msg.MessageID+`/approved/`+code+`
 
-			👎 Disapproved .../moderation/`+msg.MessageID+`/disapproved/`+code+``)
+		data := make(map[string]string)
+		data["Name"] = msg.Name
+		data["Message"] = msg.Message
+		data["Moderator"] = mds.Members[m].Name
+		data["URLApprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "?approved=" + code
+		data["URLDispprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "?disapproved=" + code
+
+		t := ParseTemplate("moderation", data)
+		if len(t) != 0 {
+			extras.SendEmail(mds.Members[m].Email, "Acción de moderación requerida", t)
+		}
 	}
 
 	return
