@@ -3,13 +3,26 @@
 <html>
 </head>
 
+<style>
+    .button {
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
+
 <body>
     <p>
         Hola {{.Name}}!<br/>
         <br/> Mensaje: <br/>
         <pre>{{.Message}}</pre>
         <br/>
-        <a href="{{.URL}}" target="_blank">Haz click aquí para confirmar tu mensaje</a>
+        <a href="{{.URL}}" target="_blank" class="button">Haz click aquí para confirmar tu mensaje</a>
     </p>
 </body>
 
