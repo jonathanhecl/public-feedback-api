@@ -48,6 +48,7 @@ func EmailModerationWait(MessageID string) {
 
 		data := make(map[string]string)
 		data["Name"] = msg.Name
+		data["Email"] = msg.Email
 		data["Message"] = msg.Message
 		data["Moderator"] = mds.Members[m].Name
 		data["URLApprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "?approved=" + code
