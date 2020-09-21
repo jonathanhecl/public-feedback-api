@@ -5,21 +5,17 @@ import (
 	"net/smtp"
 )
 
+// Tutorial: https://devanswers.co/create-application-specific-password-gmail/
+// SMTP Password: https://security.google.com/settings/security/apppasswords
+
 func SendEmail(To string, Subject string, Message string) error {
 
 	fmt.Println("Email sended ", Subject, " to ", To, " with message ", Message)
 
-	type SmtpTemplateData struct {
-		From    string
-		To      string
-		Subject string
-		Body    string
-	}
-	email := `From: ` + ex.mailDomain + `
-	To: ` + To + `
-	Subject: ` + Subject + `
-
-	` + Message
+	email := "From: " + ex.mailDomain
+	email = "\nTo: " + To
+	email = "\nSubject: " + Subject
+	email = "\n\n" + Message
 
 	err := smtp.SendMail("smtp.gmail.com:587",
 		smtp.PlainAuth("", ex.mailDomain, ex.mailAPIKey, "smtp.gmail.com"),
