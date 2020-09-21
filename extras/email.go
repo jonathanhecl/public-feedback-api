@@ -20,15 +20,21 @@ func SendEmail(To string, Subject string, Message string) error {
 		email = "\n\n" + Message
 	*/
 
+	fmt.Println("Step 1")
+
 	err := smtp.SendMail("smtp.gmail.com:587",
 		smtp.PlainAuth("", ex.mailDomain, ex.mailAPIKey, "smtp.gmail.com"),
 		ex.mailDomain, []string{To}, []byte(Message))
+
+	fmt.Println("Step 2")
 
 	if err != nil {
 		fmt.Printf("smtp error: %s", err)
 	} else {
 		fmt.Println("Sended OK")
 	}
+
+	fmt.Println("Step 3 Final")
 
 	return nil
 	/*
