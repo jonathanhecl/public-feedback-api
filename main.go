@@ -20,6 +20,11 @@ var started = time.Now()
 func main() {
 	var err error
 
+	WEBDOMAIN := os.Getenv("WEBDOMAIN")
+	if len(WEBDOMAIN) == 0 {
+		WEBDOMAIN = webDomain
+	}
+
 	PORT := os.Getenv("PORT")
 	if len(PORT) == 0 {
 		PORT = port
@@ -61,7 +66,7 @@ func main() {
 	// MongoDB
 	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
-	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET)
+	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET, WEBDOMAIN)
 	endpoint.InitEndpoint(db, MINAPPROVED)
 
 	go func() {

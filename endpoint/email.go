@@ -14,8 +14,15 @@ func EmailUserConfirmation(MessageID string) {
 		return
 	}
 
-	//fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
-	extras.SendEmail(msg.Email, "Confirmation "+msg.MessageID, "MessageID: "+msg.MessageID+"<br>🔑 Confirmation Code: "+msg.ConfirmationCode)
+	data := make(map[string]string)
+	data["Name"] = msg.Name
+	data["Message"] = msg.Message
+	data["URL"] = "https://" + extras.GetWebDomain() + "/confirm/" + msg.MessageID + "?verify=" + msg.ConfirmationCode
+
+	t := ParseTemplate("confirm", data)
+	if len(t) != 0 {
+		extras.SendEmail(msg.Email, "Confirma tu mensaje", t)
+	}
 
 	return
 

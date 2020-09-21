@@ -16,3 +16,9 @@ func RandomCode() string {
 	return string(b)
 
 }
+
+func GetWebDomain() string {
+
+	return ex.webDomain
+
+}

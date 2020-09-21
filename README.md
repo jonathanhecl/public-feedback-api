@@ -2,6 +2,7 @@
 
 ## Environment required
 
+* WEBDOMAIN
 * PORT
 * MONGODB
 * SECRET

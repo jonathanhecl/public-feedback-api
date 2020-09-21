@@ -1,9 +1,12 @@
 package endpoint
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 
@@ -20,6 +23,23 @@ func DecodeRequest(w http.ResponseWriter, r *http.Request, req interface{}) erro
 		return errors.New("Decode error")
 	}
 	return nil
+
+}
+
+func ParseTemplate(filename string, data map[string]string) string {
+
+	t, err := template.ParseFiles("./templates/" + filename + ".html")
+	if err != nil {
+		fmt.Println("ParseTemplate->ParseFiles: ", err)
+		return ""
+	}
+	buf := new(bytes.Buffer)
+	if err = t.Execute(buf, data); err != nil {
+		fmt.Println("ParseTemplate->Execute: ", err)
+		return ""
+	}
+
+	return buf.String()
 
 }
 
