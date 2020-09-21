@@ -43,7 +43,7 @@ func (db DataStore) SetModerationVote(MessageID string, Email string, IsApprove 
 			UserAgent: UserAgent,
 			VotedAt:   time.Now(),
 		})
-		if _, err := db.messages.InsertOne(ctx, msg); err != nil {
+		if _, err := db.moderation.InsertOne(ctx, msg); err != nil {
 			log.Println("Database->SetModerationVote: " + err.Error())
 			return err
 		}

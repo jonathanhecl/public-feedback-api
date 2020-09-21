@@ -57,7 +57,7 @@ func (db DataStore) SetTracking(MessageID string, GroupID string, Email string, 
 		set := bson.M{"$set": bson.M{
 			"members": msg.Members,
 		}}
-		if _, err := db.moderation.UpdateOne(ctx, q, set); err != nil {
+		if _, err := db.tracking.UpdateOne(ctx, q, set); err != nil {
 			log.Println("Database->SetTracking: " + err.Error())
 			return err
 		}
