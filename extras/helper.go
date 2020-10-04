@@ -22,3 +22,9 @@ func GetWebDomain() string {
 	return ex.webDomain
 
 }
+
+func GetAPIDomain() string {
+
+	return ex.apiDomain
+
+}

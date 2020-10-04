@@ -24,7 +24,10 @@ func main() {
 	if len(WEBDOMAIN) == 0 {
 		WEBDOMAIN = webDomain
 	}
-
+	APIDOMAIN := os.Getenv("APIDOMAIN")
+	if len(APIDOMAIN) == 0 {
+		APIDOMAIN = apiDomain
+	}
 	PORT := os.Getenv("PORT")
 	if len(PORT) == 0 {
 		PORT = port
@@ -66,7 +69,7 @@ func main() {
 	// MongoDB
 	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
-	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET, WEBDOMAIN)
+	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET, WEBDOMAIN, APIDOMAIN)
 	endpoint.InitEndpoint(db, MINAPPROVED)
 
 	go func() {

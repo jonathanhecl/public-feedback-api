@@ -9,6 +9,7 @@ var (
 	messageExpiration = time.Hour * 24
 	// Default
 	webDomain   = "localhost"
+	apiDomain   = "localhost"
 	port        = "8080"
 	mongoDB     = ""
 	secret      = "default"

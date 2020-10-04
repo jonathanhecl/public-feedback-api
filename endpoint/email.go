@@ -102,10 +102,17 @@ func EmailModerationConfirm(MessageID string) {
 		for m := range gms.Members {
 			code := extras.GenerateMemberLink(msg.MessageID, msg.CreatedAt, gms.Members[m].Email)
 			// fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email)
-			extras.SendEmail(gms.Members[m].Email, "Email de "+msg.Email, msg.Message+`
-			Tracking .../tracking/`+msg.MessageID+`/`+code+`/pixel.gif
 
-			Reply .../feedback/`+msg.MessageID+`/`+code+`/`)
+			data := make(map[string]string)
+			data["Name"] = gms.Members[m].Name
+			data["Message"] = msg.Message
+			data["URLTracking"] = "https://" + extras.GetAPIDomain() + "/tracking/" + msg.MessageID + "/" + code + "/pixel.gif"
+			data["URLFeedback"] = "https://" + extras.GetWebDomain() + "/feedback/" + msg.MessageID + "?authorization=" + code
+
+			t := ParseTemplate("message", data)
+			if len(t) != 0 {
+				extras.SendEmail(gms.Members[m].Email, "Nuevo mensaje de "+msg.Name, t)
+			}
 		}
 		err = ep.db.SetMessageSended(msg.MessageID)
 		if err != nil {
@@ -153,6 +160,15 @@ func EmailFeedbackUser(FeedbackID string) {
 	}
 
 	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
-	extras.SendEmail(msg.Email, "Feedback "+name, `Feedback message`+fbk.Message)
+	data := make(map[string]string)
+	data["Name"] = msg.Name
+	data["NameFeedback"] = name
+	data["Message"] = msg.Message
+	data["Feedback"] = fbk.Message
+
+	t := ParseTemplate("feedback", data)
+	if len(t) != 0 {
+		extras.SendEmail(msg.Email, name+" ha respondido tu mensaje!", t)
+	}
 
 }
