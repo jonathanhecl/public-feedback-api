@@ -3,6 +3,7 @@
 ## Environment required
 
 * WEBDOMAIN
+* APIDOMAIN
 * PORT
 * MONGODB
 * SECRET

@@ -72,12 +72,6 @@ func EmailModerationConfirm(MessageID string) {
 		return
 	}
 
-	mds, err := ep.db.GetGroup("MOD")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
 	vmsg, err := ep.db.GetModerationVote(MessageID)
 	if err != nil {
 		fmt.Println(err)
@@ -86,14 +80,24 @@ func EmailModerationConfirm(MessageID string) {
 
 	votes := 0
 	approve := 0
+	disapprove := 0
 	for v := range vmsg.Votes {
 		votes++
 		if vmsg.Votes[v].IsApprove {
 			approve++
+		} else if !vmsg.Votes[v].IsApprove {
+			disapprove++
 		}
 	}
 
 	if approve >= ep.minModApproves {
+		data := make(map[string]string)
+		data["Name"] = msg.Name
+		data["Message"] = msg.Message
+		t := ParseTemplate("success", data)
+		if len(t) != 0 {
+			extras.SendEmail(msg.Email, "Tu mensaje ha sido enviado con exito!", t)
+		}
 		gms, err := ep.db.GetGroup(msg.ToGroup)
 		if err != nil {
 			fmt.Println(err)
@@ -120,9 +124,17 @@ func EmailModerationConfirm(MessageID string) {
 			return
 		}
 		return
+	} else if disapprove >= ep.minModApproves {
+		data := make(map[string]string)
+		data["Name"] = msg.Name
+		data["Message"] = msg.Message
+		t := ParseTemplate("rejected", data)
+		if len(t) != 0 {
+			extras.SendEmail(msg.Email, "Tu mensaje ha sido rechazado.", t)
+		}
 	}
 
-	if votes >= len(mds.Members) {
+	if votes >= ep.minModApproves {
 		err = ep.db.SetMessageClosed(msg.MessageID)
 		if err != nil {
 			fmt.Println(err)
