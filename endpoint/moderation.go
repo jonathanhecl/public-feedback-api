@@ -59,6 +59,7 @@ func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 		ErrorResponse(w, r, errors.New("Internal error."))
 		return
 	}
+	go EmailModerationConfirm(messageID)
 	SuccessResponse(w, r)
 
 }
@@ -114,7 +115,7 @@ func HandleModerationDisapproved(w http.ResponseWriter, r *http.Request) {
 		ErrorResponse(w, r, errors.New("Internal error."))
 		return
 	}
-
+	go EmailModerationConfirm(messageID)
 	SuccessResponse(w, r)
 
 }
