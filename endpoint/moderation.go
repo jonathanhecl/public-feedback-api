@@ -54,8 +54,10 @@ func HandleModerationApproved(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "Moderator already voted") {
 			ErrorResponse(w, r, err)
+			return
 		}
 		ErrorResponse(w, r, errors.New("Internal error."))
+		return
 	}
 	SuccessResponse(w, r)
 
@@ -107,8 +109,10 @@ func HandleModerationDisapproved(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if strings.Contains(err.Error(), "Moderator already voted") {
 			ErrorResponse(w, r, err)
+			return
 		}
 		ErrorResponse(w, r, errors.New("Internal error."))
+		return
 	}
 
 	SuccessResponse(w, r)
