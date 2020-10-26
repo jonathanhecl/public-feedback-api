@@ -18,7 +18,7 @@
 * POST /message - New message
 * POST /message/confirm - Confirm message
 * GET /message/resend - Resend confirmation
-* GET /message/[ID]/ - Get a message
+* GET /message/[ID] - Get a message
 * GET /groups - List groups
 * GET /status - Get status API
 * GET /tracking/[ID]/[CODE]/pixel.gif - Pixel Tracking
