@@ -38,7 +38,22 @@ func ParseTemplate(filename string, data map[string]string) string {
 		fmt.Println("ParseTemplate->Execute: ", err)
 		return ""
 	}
+	return buf.String()
 
+}
+
+func ParseTemplateText(key string, text string, data map[string]string) string {
+
+	t, err := template.New(key).Parse(text)
+	if err != nil {
+		fmt.Println("ParseTemplateText->Parse: ", err)
+		return ""
+	}
+	buf := new(bytes.Buffer)
+	if err = t.Execute(buf, data); err != nil {
+		fmt.Println("ParseTemplateText->Execute: ", err)
+		return ""
+	}
 	return buf.String()
 
 }

@@ -6,9 +6,24 @@ import (
 	"github.com/jonathanhecl/public-feedback-api/extras"
 )
 
+var subjectEmail = map[string]string{
+	"confirm":    "Confirma el envío de tu carta al {{.Group}}",
+	"moderation": "Moderar carta de {{.Name}}",
+	"success":    "Tu carta al {{.Group}} se ha enviado con éxito.",
+	"rejected":   "Tu carta al {{.Group}} ha sido rechazada.",
+	"message":    "Carta de {{.Name}} al {{.Group}}",
+	"feedback":   "Tu carta ha sido respondida por {{.NameMember}} del {{.Group}}",
+}
+
 func EmailUserConfirmation(MessageID string) {
 
 	msg, err := ep.db.GetMessage(MessageID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	gms, err := ep.db.GetGroup(msg.ToGroup)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -18,10 +33,12 @@ func EmailUserConfirmation(MessageID string) {
 	data["Name"] = msg.Name
 	data["Message"] = msg.Message
 	data["URL"] = "https://" + extras.GetWebDomain() + "/confirm/" + msg.MessageID + "?verify=" + msg.ConfirmationCode
+	data["Group"] = gms.Label
 
 	t := ParseTemplate("confirm", data)
 	if len(t) != 0 {
-		extras.SendEmail(msg.Email, "Confirma tu mensaje", t)
+		subject := ParseTemplateText("confirm", subjectEmail["confirm"], data)
+		extras.SendEmail(msg.Email, subject, t)
 	}
 
 	return
@@ -56,7 +73,8 @@ func EmailModerationWait(MessageID string) {
 
 		t := ParseTemplate("moderation", data)
 		if len(t) != 0 {
-			extras.SendEmail(mds.Members[m].Email, "Acción de moderación requerida", t)
+			subject := ParseTemplateText("moderation", subjectEmail["moderation"], data)
+			extras.SendEmail(mds.Members[m].Email, subject, t)
 		}
 	}
 
@@ -78,6 +96,12 @@ func EmailModerationConfirm(MessageID string) {
 		return
 	}
 
+	gms, err := ep.db.GetGroup(msg.ToGroup)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	votes := 0
 	approve := 0
 	disapprove := 0
@@ -90,32 +114,32 @@ func EmailModerationConfirm(MessageID string) {
 		}
 	}
 
+	data := make(map[string]string)
+	data["Name"] = msg.Name
+	data["Message"] = msg.Message
+	data["Group"] = gms.Label
+
+	sended := false
 	if approve >= ep.minModApproves {
-		data := make(map[string]string)
-		data["Name"] = msg.Name
-		data["Message"] = msg.Message
+		sended = true
 		t := ParseTemplate("success", data)
 		if len(t) != 0 {
-			extras.SendEmail(msg.Email, "Tu mensaje ha sido enviado con exito!", t)
-		}
-		gms, err := ep.db.GetGroup(msg.ToGroup)
-		if err != nil {
-			fmt.Println(err)
-			return
+			subject := ParseTemplateText("success", subjectEmail["success"], data)
+			extras.SendEmail(msg.Email, subject, t)
 		}
 		for m := range gms.Members {
 			code := extras.GenerateMemberLink(msg.MessageID, msg.CreatedAt, gms.Members[m].Email)
 			// fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email)
 
 			data := make(map[string]string)
-			data["Name"] = gms.Members[m].Name
-			data["Message"] = msg.Message
+			data["NameMember"] = gms.Members[m].Name
 			data["URLTracking"] = "https://" + extras.GetAPIDomain() + "/tracking/" + msg.MessageID + "/" + code + "/pixel.gif"
 			data["URLFeedback"] = "https://" + extras.GetWebDomain() + "/feedback/" + msg.MessageID + "?authorization=" + code
 
 			t := ParseTemplate("message", data)
 			if len(t) != 0 {
-				extras.SendEmail(gms.Members[m].Email, "Nuevo mensaje de "+msg.Name, t)
+				subject := ParseTemplateText("message", subjectEmail["message"], data)
+				extras.SendEmail(gms.Members[m].Email, subject, t)
 			}
 		}
 		err = ep.db.SetMessageSended(msg.MessageID)
@@ -125,16 +149,15 @@ func EmailModerationConfirm(MessageID string) {
 		}
 		return
 	} else if disapprove >= ep.minModApproves {
-		data := make(map[string]string)
-		data["Name"] = msg.Name
-		data["Message"] = msg.Message
+		sended = true
 		t := ParseTemplate("rejected", data)
 		if len(t) != 0 {
-			extras.SendEmail(msg.Email, "Tu mensaje ha sido rechazado.", t)
+			subject := ParseTemplateText("rejected", subjectEmail["rejected"], data)
+			extras.SendEmail(msg.Email, subject, t)
 		}
 	}
 
-	if votes >= ep.minModApproves {
+	if votes >= ep.minModApproves && sended {
 		err = ep.db.SetMessageClosed(msg.MessageID)
 		if err != nil {
 			fmt.Println(err)
@@ -174,13 +197,15 @@ func EmailFeedbackUser(FeedbackID string) {
 	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
 	data := make(map[string]string)
 	data["Name"] = msg.Name
-	data["NameFeedback"] = name
+	data["NameMember"] = name
+	data["Group"] = gms.Label
 	data["Message"] = msg.Message
 	data["Feedback"] = fbk.Message
 
 	t := ParseTemplate("feedback", data)
 	if len(t) != 0 {
-		extras.SendEmail(msg.Email, name+" ha respondido tu mensaje!", t)
+		subject := ParseTemplateText("feedback", subjectEmail["feedback"], data)
+		extras.SendEmail(msg.Email, subject, t)
 	}
 
 }
