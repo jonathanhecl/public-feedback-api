@@ -20,6 +20,10 @@ var started = time.Now()
 func main() {
 	var err error
 
+	BRANDTITLE := os.Getenv("BRANDTITLE")
+	if len(BRANDTITLE) == 0 {
+		BRANDTITLE = brandTitle
+	}
 	WEBDOMAIN := os.Getenv("WEBDOMAIN")
 	if len(WEBDOMAIN) == 0 {
 		WEBDOMAIN = webDomain
@@ -70,7 +74,7 @@ func main() {
 	db := database.InitDatabase(MONGODB, GOOGLECERT, GOOGLEGROUP)
 	defer database.CloseDatabase(db)
 	extras.InitExtras(MAILDOMAIN, MAILAPIKEY, SECRET, WEBDOMAIN, APIDOMAIN)
-	endpoint.InitEndpoint(db, MINAPPROVED)
+	endpoint.InitEndpoint(db, BRANDTITLE, MINAPPROVED)
 
 	go func() {
 		db.LoadGroups()

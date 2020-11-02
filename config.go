@@ -4,18 +4,19 @@ import "time"
 
 var (
 	serverName        = "PublicFeedback Core API"
-	serverVer         = "0.0.16"
+	serverVer         = "0.0.17"
 	logPath           = "development.log"
 	messageExpiration = time.Hour * 24
 	// Default
-	webDomain   = "localhost"
 	apiDomain   = "localhost"
-	port        = "8080"
-	mongoDB     = ""
-	secret      = "default"
+	brandTitle  = "PublicFeedback"
 	googleCert  = ""
 	googleGroup = ""
-	minApproved = 1
-	mailDomain  = "" // future
 	mailAPIKey  = "" // future
+	mailDomain  = "" // future
+	minApproved = 1
+	mongoDB     = ""
+	port        = "8080"
+	secret      = "default"
+	webDomain   = "localhost"
 )

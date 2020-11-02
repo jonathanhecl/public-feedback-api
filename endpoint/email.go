@@ -30,6 +30,7 @@ func EmailUserConfirmation(MessageID string) {
 	}
 
 	data := make(map[string]string)
+	data["Brand"] = ep.brandTitle
 	data["Name"] = msg.Name
 	data["Message"] = msg.Message
 	data["URL"] = "https://" + extras.GetWebDomain() + "/confirm/" + msg.MessageID + "?verify=" + msg.ConfirmationCode
@@ -64,6 +65,7 @@ func EmailModerationWait(MessageID string) {
 		//fmt.Sprintf("%s <%s>", mds.Members[m].Name, mds.Members[m].Email)
 
 		data := make(map[string]string)
+		data["Brand"] = ep.brandTitle
 		data["Name"] = msg.Name
 		data["Email"] = msg.Email
 		data["Message"] = msg.Message
@@ -115,6 +117,7 @@ func EmailModerationConfirm(MessageID string) {
 	}
 
 	data := make(map[string]string)
+	data["Brand"] = ep.brandTitle
 	data["Name"] = msg.Name
 	data["Message"] = msg.Message
 	data["Group"] = gms.Label
@@ -195,6 +198,7 @@ func EmailFeedbackUser(FeedbackID string) {
 
 	// fmt.Sprintf("%s <%s>", msg.Name, msg.Email)
 	data := make(map[string]string)
+	data["Brand"] = ep.brandTitle
 	data["Name"] = msg.Name
 	data["NameMember"] = name
 	data["Group"] = gms.Label
