@@ -34,7 +34,7 @@ func EmailUserConfirmation(MessageID string) {
 	data["Brand"] = ep.brandTitle
 	data["Name"] = msg.Name
 	data["Message"] = msg.Message
-	data["URL"] = "https://" + extras.GetWebDomain() + "/confirm/" + msg.MessageID + "?verify=" + msg.ConfirmationCode
+	data["URL"] = "https://" + extras.GetWebDomain() + "/confirm/" + msg.MessageID + "/" + msg.ConfirmationCode
 	data["Group"] = gms.Label
 
 	t := ParseTemplate("confirm", data)
