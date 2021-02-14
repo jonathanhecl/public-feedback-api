@@ -72,8 +72,8 @@ func EmailModerationWait(MessageID string) {
 		data["Email"] = msg.Email
 		data["Message"] = msg.Message
 		data["Moderator"] = mds.Members[m].Name
-		data["URLApprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "?approved=" + code
-		data["URLDisapprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "?disapproved=" + code
+		data["URLApprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "/approved/" + code
+		data["URLDisapprove"] = "https://" + extras.GetWebDomain() + "/moderation/" + msg.MessageID + "/disapproved/" + code
 
 		t := ParseTemplate("moderation", data)
 		if len(t) != 0 {
