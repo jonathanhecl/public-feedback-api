@@ -139,7 +139,7 @@ func EmailModerationConfirm(MessageID string) {
 
 			data["NameMember"] = gms.Members[m].Name
 			data["URLTracking"] = "https://" + extras.GetAPIDomain() + "/tracking/" + msg.MessageID + "/" + code + "/pixel.gif"
-			data["URLFeedback"] = "https://" + extras.GetWebDomain() + "/feedback/" + msg.MessageID + "?authorization=" + code
+			data["URLFeedback"] = "https://" + extras.GetWebDomain() + "/feedback/" + msg.MessageID + "/authorization/" + code
 
 			t := ParseTemplate("message", data)
 			if len(t) != 0 {
