@@ -137,7 +137,8 @@ func EmailModerationConfirm(MessageID string) {
 			code := extras.GenerateMemberLink(msg.MessageID, msg.CreatedAt, gms.Members[m].Email)
 			// fmt.Sprintf("%s <%s>", gms.Members[m].Name, gms.Members[m].Email)
 
-			data["NameMember"] = gms.Members[m].Name
+			data["Name"] = msg.Name                  // user name
+			data["NameMember"] = gms.Members[m].Name // member name
 			data["URLTracking"] = "https://" + extras.GetAPIDomain() + "/tracking/" + msg.MessageID + "/" + code + "/pixel.gif"
 			data["URLFeedback"] = "https://" + extras.GetWebDomain() + "/feedback/" + msg.MessageID + "/authorization/" + code
 
