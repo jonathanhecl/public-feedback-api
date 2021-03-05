@@ -65,7 +65,8 @@ func main() {
 		MAILAPIKEY = mailAPIKey
 	}
 
-	fmt.Println(serverName + " v" + serverVer)
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println("Running " + serverName + " v" + serverVer + "...")
 	fmt.Println("Min. Approved: ", MINAPPROVED)
 
 	time.Sleep(5 * time.Second)

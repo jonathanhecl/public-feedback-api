@@ -30,6 +30,7 @@ func (db DataStore) SetTracking(MessageID string, GroupID string, Email string, 
 			FirstReadedAt: time.Now(),
 			LastReadedAt:  time.Now(),
 		})
+		msg.SendedAt = msg.SendedAt
 		if _, err := db.tracking.InsertOne(ctx, msg); err != nil {
 			log.Println("Database->SetTracking: " + err.Error())
 			return err

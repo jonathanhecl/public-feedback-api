@@ -6,6 +6,7 @@ type TrackingObject struct {
 	MessageID string                 `bson:"id" json:"id"`
 	GroupID   string                 `bson:"group_id" json:"group_id"`
 	Members   []MemberTrackingObject `bson:"members" json:"members"`
+	SendedAt  time.Time              `bson:"sended_at" json:"sended_at"`
 }
 
 type MemberTrackingObject struct {
