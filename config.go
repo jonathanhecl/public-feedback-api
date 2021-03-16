@@ -4,7 +4,7 @@ import "time"
 
 var (
 	serverName        = "PublicFeedback Core API"
-	serverVer         = "0.0.21"
+	serverVer         = "0.0.22"
 	logPath           = "development.log"
 	messageExpiration = time.Hour * 24
 	// Default
